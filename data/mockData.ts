@@ -3,7 +3,7 @@ import type { Transaction } from "@/types";
 export const mockTransactions: Transaction[] = [
   {
     id: "1",
-    date: "2024-01-05",
+    date: "2024-01-05T15:15:00",
     description: "January salary",
     merchant: "TechCorp",
     amount: 5200,
@@ -15,7 +15,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "2",
-    date: "2024-01-07",
+    date: "2024-01-07T11:45:00",
     description: "Grocery run",
     merchant: "Whole Foods",
     amount: -145.38,
@@ -27,7 +27,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "3",
-    date: "2024-01-10",
+    date: "2024-01-10T10:33:00",
     description: "Gym membership",
     merchant: "Equinox",
     amount: -210,
@@ -39,7 +39,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "4",
-    date: "2024-01-11",
+    date: "2024-01-11T13:15:00",
     description: "Monthly rent",
     merchant: "Maple Apartments",
     amount: -1800,
@@ -51,7 +51,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "5",
-    date: "2024-01-12",
+    date: "2024-01-12T10:56:00",
     description: "Dinner with friends",
     merchant: "Nobu",
     amount: -125.4,
@@ -63,7 +63,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "6",
-    date: "2024-01-15",
+    date: "2024-01-15T10:38:00",
     description: "Freelance project",
     merchant: "Design Studio",
     amount: 1200,
@@ -75,7 +75,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "7",
-    date: "2024-01-18",
+    date: "2024-01-18T17:22:00",
     description: "Ride share",
     merchant: "Uber",
     amount: -24.5,
@@ -87,7 +87,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "8",
-    date: "2024-01-20",
+    date: "2024-01-20T16:56:00",
     description: "Coffee and snacks",
     merchant: "Blue Bottle",
     amount: -18.75,
@@ -99,7 +99,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "9",
-    date: "2024-01-23",
+    date: "2024-01-23T12:18:00",
     description: "Streaming subscription",
     merchant: "Netflix",
     amount: -15.99,
@@ -111,7 +111,7 @@ export const mockTransactions: Transaction[] = [
   },
   {
     id: "10",
-    date: "2024-01-26",
+    date: "2024-01-26T10:02:00",
     description: "Bonus payout",
     merchant: "TechCorp",
     amount: 800,
