@@ -26,25 +26,25 @@ export function UploadDialog() {
       <DialogTrigger asChild>
         <Button>Upload PDF</Button>
       </DialogTrigger>
-      <DialogContent className="bg-zinc-900 text-white rounded-2xl p-8">
+      <DialogContent className="rounded-2xl p-8">
         <DialogHeader>
           <DialogTitle>Upload Statement</DialogTitle>
-          <DialogDescription className="text-zinc-400">
+          <DialogDescription>
             Add a PDF statement to automatically import transactions into FinanceFlow.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6">
           <div className="space-y-3">
             <label className="text-sm font-medium">Statement PDF</label>
-            <div className="border border-dashed border-zinc-700 rounded-xl h-48 flex flex-col items-center justify-center text-zinc-400 gap-3">
-              <UploadIcon className="h-8 w-8 text-zinc-300" />
+            <div className="border border-dashed rounded-xl h-48 flex flex-col items-center justify-center text-muted-foreground gap-3">
+              <UploadIcon className="h-8 w-8" />
               <div className="text-center text-sm">
                 <p>Drop your PDF here</p>
                 <p>
                   or{" "}
                   <label
                     htmlFor="statement-pdf"
-                    className="text-white underline underline-offset-4 cursor-pointer"
+                    className="text-primary underline underline-offset-4 cursor-pointer"
                   >
                     click to browse
                   </label>
@@ -61,7 +61,7 @@ export function UploadDialog() {
           <div className="space-y-2">
             <label className="text-sm font-medium">Bank / Card Issuer *</label>
             <Select>
-              <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
+              <SelectTrigger>
                 <SelectValue placeholder="Select issuer" />
               </SelectTrigger>
               <SelectContent>
@@ -74,20 +74,14 @@ export function UploadDialog() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium">Account Name (optional)</label>
-            <Input
-              placeholder="e.g., Chase Sapphire"
-              className="bg-zinc-800 border-zinc-700 text-white placeholder:text-zinc-400"
-            />
+            <Input placeholder="e.g., Chase Sapphire" />
           </div>
         </div>
         <DialogFooter>
           <Button variant="secondary" type="button">
             Cancel
           </Button>
-          <Button
-            type="button"
-            className="w-full bg-white text-zinc-900 hover:bg-white/90"
-          >
+          <Button type="button" className="w-full">
             Process PDF
           </Button>
         </DialogFooter>
