@@ -14,6 +14,7 @@ import type { Transaction } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { formatTransactionDate } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
 const categories = [
@@ -48,7 +49,9 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
         accessorKey: "date",
         header: "Date",
         cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">{row.original.date}</span>
+          <span className="text-sm text-muted-foreground">
+            {formatTransactionDate(row.original.date)}
+          </span>
         )
       },
       {
