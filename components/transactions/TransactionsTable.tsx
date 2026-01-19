@@ -6,6 +6,8 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable
 } from "@tanstack/react-table";
 import { CheckIcon } from "@radix-ui/react-icons";
@@ -35,6 +37,7 @@ type TransactionsTableProps = {
 
 export function TransactionsTable({ data }: TransactionsTableProps) {
   const [rows, setRows] = React.useState<Transaction[]>(data);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const parentRef = React.useRef<HTMLDivElement | null>(null);
   const updateRow = React.useCallback((id: string, patch: Partial<Transaction>) => {
     setRows((prev) =>
@@ -173,7 +176,12 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
   const table = useReactTable({
     data: rows,
     columns,
-    getCoreRowModel: getCoreRowModel()
+    state: {
+      sorting
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel()
   });
 
   const rowVirtualizer = useVirtualizer({
@@ -197,9 +205,20 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
                 <tr key={headerGroup.id} className="border-b">
                   {headerGroup.headers.map((header) => (
                     <th key={header.id} className="px-4 py-3 font-medium">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                      {header.isPlaceholder ? null : (
+                        <button
+                          className={cn(
+                            "flex w-full items-center gap-2 text-left",
+                            header.column.getCanSort() && "cursor-pointer select-none"
+                          )}
+                          type="button"
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {header.column.getIsSorted() === "asc" ? "↑" : null}
+                          {header.column.getIsSorted() === "desc" ? "↓" : null}
+                        </button>
+                      )}
                     </th>
                   ))}
                 </tr>
