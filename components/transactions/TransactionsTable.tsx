@@ -12,6 +12,7 @@ import { CheckIcon } from "@radix-ui/react-icons";
 
 import type { Transaction } from "@/types";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +36,11 @@ type TransactionsTableProps = {
 export function TransactionsTable({ data }: TransactionsTableProps) {
   const [rows, setRows] = React.useState<Transaction[]>(data);
   const parentRef = React.useRef<HTMLDivElement | null>(null);
+  const updateRow = React.useCallback((id: string, patch: Partial<Transaction>) => {
+    setRows((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...patch } : item))
+    );
+  }, []);
 
   const columns = React.useMemo<ColumnDef<Transaction>[]>(
     () => [
@@ -48,31 +54,45 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
       {
         accessorKey: "description",
         header: "Description",
-        cell: ({ row }) => <span className="font-medium">{row.original.description}</span>
+        cell: ({ row }) => (
+          <Input
+            className="h-8"
+            value={row.original.description}
+            onChange={(event) => updateRow(row.original.id, { description: event.target.value })}
+          />
+        )
       },
       {
         accessorKey: "merchant",
-        header: "Merchant"
+        header: "Merchant",
+        cell: ({ row }) => (
+          <Input
+            className="h-8"
+            value={row.original.merchant}
+            onChange={(event) => updateRow(row.original.id, { merchant: event.target.value })}
+          />
+        )
       },
       {
         accessorKey: "amount",
         header: "Amount",
         cell: ({ row }) => {
           const amount = row.original.amount;
-          const formatted = new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD"
-          }).format(amount);
-
           return (
-            <span
+            <Input
               className={cn(
-                "font-semibold",
+                "h-8 text-right font-semibold",
                 amount >= 0 ? "text-emerald-600" : "text-rose-600"
               )}
-            >
-              {formatted}
-            </span>
+              type="number"
+              step="0.01"
+              value={Number.isNaN(amount) ? "" : amount}
+              onChange={(event) =>
+                updateRow(row.original.id, {
+                  amount: event.target.value === "" ? 0 : Number(event.target.value)
+                })
+              }
+            />
           );
         }
       },
@@ -93,13 +113,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
           return (
             <Select
               value={transaction.category}
-              onValueChange={(value) => {
-                setRows((prev) =>
-                  prev.map((item) =>
-                    item.id === transaction.id ? { ...item, category: value } : item
-                  )
-                );
-              }}
+              onValueChange={(value) => updateRow(transaction.id, { category: value })}
             >
               <SelectTrigger className="h-8 w-[160px]">
                 <SelectValue placeholder="Select" />
@@ -117,12 +131,25 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
       },
       {
         accessorKey: "account",
-        header: "Account"
+        header: "Account",
+        cell: ({ row }) => (
+          <Input
+            className="h-8"
+            value={row.original.account}
+            onChange={(event) => updateRow(row.original.id, { account: event.target.value })}
+          />
+        )
       },
       {
         accessorKey: "statement",
         header: "Statement",
-        cell: ({ row }) => <span className="text-muted-foreground">{row.original.statement}</span>
+        cell: ({ row }) => (
+          <Input
+            className="h-8"
+            value={row.original.statement}
+            onChange={(event) => updateRow(row.original.id, { statement: event.target.value })}
+          />
+        )
       },
       {
         accessorKey: "confidence",
@@ -140,7 +167,7 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
         }
       }
     ],
-    []
+    [updateRow]
   );
 
   const table = useReactTable({
