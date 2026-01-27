@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -216,9 +217,11 @@ export function UploadDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button variant="secondary" type="button">
-            Cancel
-          </Button>
+          <DialogClose asChild>
+            <Button variant="secondary" type="button">
+              Cancel
+            </Button>
+          </DialogClose>
           <Button type="button" className="w-full" disabled={isImporting || parsedRows.length === 0}>
             {isImporting ? "Procesando..." : "Procesar archivo"}
           </Button>
