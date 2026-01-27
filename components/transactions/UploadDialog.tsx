@@ -216,7 +216,7 @@ export function UploadDialog() {
             />
           </div>
         </div>
-        <DialogFooter className="gap-3 sm:gap-2">
+        <DialogFooter className="mt-6 flex-wrap gap-3 sm:gap-2">
           <DialogClose asChild>
             <Button variant="secondary" type="button">
               Cancel
