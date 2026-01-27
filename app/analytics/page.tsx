@@ -1,15 +1,24 @@
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
+import { AnalyticsFilters } from "@/components/analytics/AnalyticsFilters";
+import { CashFlowChart } from "@/components/analytics/CashFlowChart";
+import { Insights } from "@/components/analytics/Insights";
+import { KpiRow } from "@/components/analytics/KpiRow";
+import { SpendingBreakdown } from "@/components/analytics/SpendingBreakdown";
 
 export default function AnalyticsPage() {
   return (
-    <main className="container flex min-h-screen flex-col items-center justify-center gap-4 py-10">
-      <h1 className="text-3xl font-semibold">Analytics</h1>
-      <p className="text-muted-foreground">Analytics dashboard coming soon.</p>
-      <Button asChild variant="outline">
-        <Link href="/transactions">Back to transactions</Link>
-      </Button>
+    <main className="min-h-screen bg-muted/30">
+      <div className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur">
+        <div className="container py-6">
+          <AnalyticsFilters />
+        </div>
+      </div>
+
+      <div className="container space-y-6 py-8">
+        <KpiRow />
+        <CashFlowChart />
+        <SpendingBreakdown />
+        <Insights />
+      </div>
     </main>
   );
 }
