@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -98,9 +99,11 @@ export function ColumnMappingDialog({
           )}
         </div>
         <DialogFooter className="gap-2 pt-4">
-          <Button variant="secondary" type="button" onClick={() => onOpenChange(false)}>
-            Cancelar
-          </Button>
+          <DialogClose asChild>
+            <Button variant="secondary" type="button">
+              Cancelar
+            </Button>
+          </DialogClose>
           <Button type="button" onClick={onConfirm} disabled={missingFields.length > 0 || columns.length === 0}>
             Continuar
           </Button>
