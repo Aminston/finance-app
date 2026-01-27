@@ -32,3 +32,11 @@ model Transaction {
 
   account Account @relation(fields: [accountId], references: [id])
 }
+
+model ImportMapping {
+  id          String   @id @default(uuid())
+  bankName    String   @unique
+  mappingJson Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
