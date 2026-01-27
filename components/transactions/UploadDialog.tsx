@@ -216,13 +216,17 @@ export function UploadDialog() {
             />
           </div>
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-3 sm:gap-2">
           <DialogClose asChild>
             <Button variant="secondary" type="button">
               Cancel
             </Button>
           </DialogClose>
-          <Button type="button" className="w-full" disabled={isImporting || parsedRows.length === 0}>
+          <Button
+            type="button"
+            className="w-full sm:w-auto"
+            disabled={isImporting || parsedRows.length === 0}
+          >
             {isImporting ? "Procesando..." : "Procesar archivo"}
           </Button>
         </DialogFooter>
