@@ -1,4 +1,3 @@
-import Papa from "papaparse";
 import * as XLSX from "xlsx";
 
 export type NormalizedRow = Record<string, string>;
@@ -18,10 +17,8 @@ export async function parseFileToRows(file: File): Promise<{ columns: string[]; 
 
   if (extension === "csv") {
     const csvText = await file.text();
-    const parsed = Papa.parse<string[]>(csvText, {
-      skipEmptyLines: true
-    });
-    const [headerRow = [], ...dataRows] = parsed.data as string[][];
+    const rowsArray = parseCsvRows(csvText);
+    const [headerRow = [], ...dataRows] = rowsArray;
     const columns = headerRow.map((header, index) => normalizeHeader(String(header ?? ""), index));
     const rows = dataRows.map((row) => {
       const rowEntries: [string, string][] = columns.map((column, index) => [
@@ -65,3 +62,39 @@ export async function parseFileToRows(file: File): Promise<{ columns: string[]; 
 
   return { columns: [], rows: [] };
 }
+
+const parseCsvRows = (csvText: string): string[][] => {
+  const lines = csvText.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  return lines.map(parseCsvLine);
+};
+
+const parseCsvLine = (line: string): string[] => {
+  const result: string[] = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const char = line[index];
+
+    if (char === "\"") {
+      if (inQuotes && line[index + 1] === "\"") {
+        current += "\"";
+        index += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === "," && !inQuotes) {
+      result.push(current);
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  result.push(current);
+  return result.map((value) => value.trim());
+};
