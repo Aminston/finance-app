@@ -45,14 +45,14 @@ export function ColumnMappingDialog({
 }: ColumnMappingDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl rounded-2xl p-6 max-h-[90vh] overflow-hidden">
+      <DialogContent className="max-w-3xl rounded-2xl p-6 max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
           <DialogTitle>Mapeo de columnas</DialogTitle>
           <DialogDescription>
             Vincula las columnas detectadas con los campos de la transacción. Banco: {bankName || "Sin seleccionar"}.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 overflow-y-auto pr-2">
+        <div className="space-y-4 overflow-y-auto pr-2 flex-1">
           <div className="grid gap-4">
             {columns.length === 0 ? (
               <p className="text-sm text-muted-foreground">No se detectaron columnas en el archivo.</p>
@@ -97,12 +97,12 @@ export function ColumnMappingDialog({
             </p>
           )}
         </div>
-        <DialogFooter className="gap-2">
+        <DialogFooter className="gap-2 pt-4">
           <Button variant="secondary" type="button" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
           <Button type="button" onClick={onConfirm} disabled={missingFields.length > 0 || columns.length === 0}>
-            Confirmar mapeo
+            Continuar
           </Button>
         </DialogFooter>
       </DialogContent>
