@@ -32,9 +32,7 @@ export default function LeftSidebarNav() {
               FinanceFlow
             </div>
           )}
-          {!collapsed && (
-            <span className="text-xs text-zinc-500">Hover para colapsar</span>
-          )}
+          <span className="sr-only">Menú principal</span>
         </div>
         <nav className="flex flex-1 flex-col gap-1 px-3">
           {navItems.map((item) => {
@@ -59,9 +57,7 @@ export default function LeftSidebarNav() {
             );
           })}
         </nav>
-        <div className={`px-4 py-4 text-xs text-zinc-500 ${collapsed ? "text-center" : ""}`}>
-          {!collapsed ? "Menú colapsable" : "⋯"}
-        </div>
+        <div className="px-4 py-4" />
       </div>
     </aside>
   );
