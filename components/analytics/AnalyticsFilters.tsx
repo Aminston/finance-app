@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 
-import { PageHeader } from "@/components/layout/PageHeader";
+import { PageHeaderSection } from "@/components/layout/PageHeaderSection";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,22 +57,20 @@ export function AnalyticsFilters() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <PageHeader
-          title="Analítica"
-          subtitle="Visión rápida del flujo, gasto y capacidad de ahorro."
-        />
-        <div className="flex flex-wrap items-center gap-3">
+    <PageHeaderSection
+      title="Analítica"
+      subtitle="Visión rápida del flujo, gasto y capacidad de ahorro."
+      actions={
+        <>
           <Badge variant="outline" className="text-xs font-medium">
             {label}
           </Badge>
           <Button asChild variant="outline" className="h-9">
             <Link href="/transactions">Volver a transacciones</Link>
           </Button>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       <div className="flex flex-wrap items-center gap-3">
         <Select value={preset} onValueChange={handlePresetChange}>
           <SelectTrigger className="h-10 w-[200px]">
@@ -123,6 +121,6 @@ export function AnalyticsFilters() {
           </div>
         )}
       </div>
-    </div>
+    </PageHeaderSection>
   );
 }
