@@ -47,17 +47,20 @@ const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
 const shortDateFormatter = new Intl.DateTimeFormat("es-ES", {
   day: "numeric",
-  month: "short"
+  month: "short",
+  timeZone: "UTC"
 });
 
 const shortDateYearFormatter = new Intl.DateTimeFormat("es-ES", {
   day: "numeric",
   month: "short",
-  year: "numeric"
+  year: "numeric",
+  timeZone: "UTC"
 });
 
 const monthFormatter = new Intl.DateTimeFormat("es-ES", {
-  month: "short"
+  month: "short",
+  timeZone: "UTC"
 });
 
 const currencyFormatter = (currency: CurrencyCode) =>
