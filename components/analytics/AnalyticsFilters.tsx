@@ -3,7 +3,10 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatInputDate, useAnalyticsFilters } from "@/lib/analytics";
@@ -61,9 +64,14 @@ export function AnalyticsFilters() {
             Visión rápida del flujo, gasto y capacidad de ahorro.
           </p>
         </div>
-        <Badge variant="outline" className="text-xs font-medium">
-          {label}
-        </Badge>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="outline" className="text-xs font-medium">
+            {label}
+          </Badge>
+          <Button asChild variant="outline" className="h-9">
+            <Link href="/transactions">Volver a transacciones</Link>
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
