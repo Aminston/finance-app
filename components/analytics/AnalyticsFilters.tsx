@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 
+import { PageHeader } from "@/components/layout/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,12 +59,10 @@ export function AnalyticsFilters() {
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">Analítica</h1>
-          <p className="text-sm text-muted-foreground">
-            Visión rápida del flujo, gasto y capacidad de ahorro.
-          </p>
-        </div>
+        <PageHeader
+          title="Analítica"
+          subtitle="Visión rápida del flujo, gasto y capacidad de ahorro."
+        />
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="outline" className="text-xs font-medium">
             {label}
