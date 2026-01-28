@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navItems = [
-  { href: "/", label: "Inicio", icon: "🏠" },
-  { href: "/transactions", label: "Transacciones", icon: "💳" },
-  { href: "/analytics", label: "Analítica", icon: "📊" }
+  { href: "/", label: "Inicio", icon: "🏡" },
+  { href: "/transactions", label: "Transacciones", icon: "💸" },
+  { href: "/analytics", label: "Analítica", icon: "📈" }
 ];
 
 export default function LeftSidebarNav() {
