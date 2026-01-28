@@ -16,27 +16,25 @@ export default function LeftSidebarNav() {
 
   return (
     <aside
+      onMouseEnter={() => setCollapsed(false)}
+      onMouseLeave={() => setCollapsed(true)}
       className={`sticky top-0 h-screen shrink-0 border-r border-zinc-800 bg-zinc-950 text-zinc-100 transition-all duration-200 ${
         collapsed ? "w-16" : "w-64"
       }`}
     >
       <div className="flex h-full flex-col">
-        <div className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-4 py-4`}>
+        <div
+          className={`flex items-center ${collapsed ? "justify-center" : "justify-between"} px-4 py-4`}
+        >
           {!collapsed && (
             <div className="flex items-center gap-2 text-sm font-semibold text-zinc-100">
               <span className="inline-flex h-2 w-2 items-center justify-center rounded-full bg-emerald-400" />
               FinanceFlow
             </div>
           )}
-          <button
-            type="button"
-            onClick={() => setCollapsed((prev) => !prev)}
-            className="rounded-md border border-zinc-800 p-1 text-xs text-zinc-300 transition hover:bg-zinc-900"
-            aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
-            aria-expanded={!collapsed}
-          >
-            {collapsed ? ">" : "<"}
-          </button>
+          {!collapsed && (
+            <span className="text-xs text-zinc-500">Hover para colapsar</span>
+          )}
         </div>
         <nav className="flex flex-1 flex-col gap-1 px-3">
           {navItems.map((item) => {
