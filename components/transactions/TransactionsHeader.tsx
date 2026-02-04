@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
+import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -74,75 +75,70 @@ export function TransactionsHeader() {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <h1 className="text-3xl font-semibold">FinanceFlow</h1>
-        <p className="text-sm text-muted-foreground">
-          Keep every transaction organized and ready for analysis.
-        </p>
-      </div>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button variant="ghost" asChild>
-          <Link href="/analytics">Analytics</Link>
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Actions</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem>Export CSV</DropdownMenuItem>
-            <DropdownMenuItem>Sync accounts</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <div className="flex flex-col items-end gap-1">
-          <div className="flex items-center">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".xlsx,.csv"
-              className="hidden"
-              onChange={handleFileChange}
-            />
-            <div className="inline-flex items-center rounded-md border bg-background shadow-sm">
-              <Button
-                className="rounded-r-none border-0"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Subir Excel
-              </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="rounded-l-none border-l px-2"
-                    aria-label="Descargar plantilla"
-                  >
-                    <ChevronDownIcon className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <a href={TEMPLATE_URL} download>
-                      Descargar plantilla
-                    </a>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+    <PageHeader
+      title="FinanceFlow"
+      description="Keep every transaction organized and ready for analysis."
+      actions={
+        <>
+          <Button variant="ghost" asChild>
+            <Link href="/analytics">Analytics</Link>
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Actions</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>Export CSV</DropdownMenuItem>
+              <DropdownMenuItem>Sync accounts</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".xlsx,.csv"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <div className="inline-flex items-center rounded-md border bg-background shadow-sm">
+                <Button
+                  className="rounded-r-none border-0"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Subir Excel
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="rounded-l-none border-l px-2"
+                      aria-label="Descargar plantilla"
+                    >
+                      <ChevronDownIcon className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <a href={TEMPLATE_URL} download>
+                        Descargar plantilla
+                      </a>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
-          </div>
-          <span className="text-xs text-muted-foreground">
-            Plantilla con banco y nombre de cuenta incluidos.
-          </span>
-          {statusLabel && (
-            <span
-              className="text-xs text-muted-foreground"
-              aria-live="polite"
-            >
-              {statusLabel}
+            <span className="text-xs text-muted-foreground">
+              Plantilla con banco y nombre de cuenta incluidos.
             </span>
-          )}
-        </div>
-      </div>
-    </div>
+            {statusLabel && (
+              <span className="text-xs text-muted-foreground" aria-live="polite">
+                {statusLabel}
+              </span>
+            )}
+          </div>
+        </>
+      }
+    />
   );
 }
