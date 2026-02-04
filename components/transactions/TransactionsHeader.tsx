@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
 import { PageHeader } from "@/components/layout/PageHeader";
@@ -80,18 +79,6 @@ export function TransactionsHeader() {
       description="Keep every transaction organized and ready for analysis."
       actions={
         <>
-          <Button variant="ghost" asChild>
-            <Link href="/analytics">Analytics</Link>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Actions</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Export CSV</DropdownMenuItem>
-              <DropdownMenuItem>Sync accounts</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center">
               <input
