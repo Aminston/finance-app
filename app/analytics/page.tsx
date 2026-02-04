@@ -5,6 +5,7 @@ import { CashFlowChart } from "@/components/analytics/CashFlowChart";
 import { Insights } from "@/components/analytics/Insights";
 import { KpiRow } from "@/components/analytics/KpiRow";
 import { SpendingBreakdown } from "@/components/analytics/SpendingBreakdown";
+import { FiltersCard } from "@/components/layout/FiltersCard";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 
@@ -21,9 +22,9 @@ export default function AnalyticsPage() {
             </Button>
           }
         >
-          <div className="rounded-xl border bg-card p-4">
+          <FiltersCard>
             <AnalyticsFilters />
-          </div>
+          </FiltersCard>
         </PageHeader>
       </div>
 

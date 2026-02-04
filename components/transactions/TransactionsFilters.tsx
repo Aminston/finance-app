@@ -3,6 +3,7 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { FiltersBar } from "@/components/layout/FiltersBar";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -33,7 +34,7 @@ export function TransactionsFilters() {
   );
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <FiltersBar>
       <Select value={currentMonth} onValueChange={(value) => updateParams("month", value)}>
         <SelectTrigger className="h-10 w-[180px]">
           <SelectValue placeholder="Select month" />
@@ -66,6 +67,6 @@ export function TransactionsFilters() {
         placeholder="Search merchant or description"
         className="w-[260px]"
       />
-    </div>
+    </FiltersBar>
   );
 }

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { FiltersBar } from "@/components/layout/FiltersBar";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -53,7 +54,7 @@ export function AnalyticsFilters() {
   };
 
   return (
-    <div className="flex w-full flex-wrap items-center gap-3">
+    <FiltersBar>
       <Badge variant="outline" className="text-xs font-medium">
         {label}
       </Badge>
@@ -84,7 +85,7 @@ export function AnalyticsFilters() {
       </Select>
 
       {preset === "custom" && (
-        <div className="flex flex-wrap items-center gap-3">
+        <FiltersBar>
           <div className="flex flex-col gap-1">
             <span className="text-xs font-medium text-muted-foreground">Desde</span>
             <Input
@@ -103,8 +104,8 @@ export function AnalyticsFilters() {
               className="w-[160px]"
             />
           </div>
-        </div>
+        </FiltersBar>
       )}
-    </div>
+    </FiltersBar>
   );
 }
