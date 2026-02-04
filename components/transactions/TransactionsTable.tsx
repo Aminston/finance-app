@@ -259,10 +259,6 @@ export function TransactionsTable({ data }: TransactionsTableProps) {
   return (
     <>
       <div className="rounded-xl border bg-card shadow-sm">
-        <div className="border-b px-6 py-4">
-          <h2 className="text-lg font-semibold">Transactions</h2>
-          <p className="text-sm text-muted-foreground">Track income and expenses across accounts.</p>
-        </div>
         <div className="px-6 py-4">
           <div className="overflow-hidden rounded-lg border">
             <table className="w-full border-collapse text-left text-sm">
