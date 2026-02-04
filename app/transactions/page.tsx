@@ -1,6 +1,7 @@
 import { TransactionsFilters } from "@/components/transactions/TransactionsFilters";
 import { TransactionsHeader } from "@/components/transactions/TransactionsHeader";
 import { TransactionsTable } from "@/components/transactions/TransactionsTable";
+import { FiltersCard } from "@/components/layout/FiltersCard";
 import { getTransactions } from "@/lib/transactions";
 
 export default async function TransactionsPage({
@@ -16,11 +17,13 @@ export default async function TransactionsPage({
 
   return (
     <main className="min-h-screen bg-muted/30">
-      <div className="container space-y-6 py-10">
+      <div className="sticky top-0 z-20 border-b bg-background/95 backdrop-blur">
         <TransactionsHeader />
-        <div className="rounded-xl border bg-card p-4">
+      </div>
+      <div className="container space-y-6 py-8">
+        <FiltersCard>
           <TransactionsFilters />
-        </div>
+        </FiltersCard>
         <TransactionsTable data={transactions} />
       </div>
     </main>
