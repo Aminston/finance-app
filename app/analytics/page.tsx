@@ -21,14 +21,13 @@ export default function AnalyticsPage() {
               <Link href="/transactions">Transactions</Link>
             </Button>
           }
-        >
-          <FiltersCard>
-            <AnalyticsFilters />
-          </FiltersCard>
-        </PageHeader>
+        />
       </div>
 
       <div className="container space-y-6 py-8">
+        <FiltersCard>
+          <AnalyticsFilters />
+        </FiltersCard>
         <KpiRow />
         <CashFlowChart />
         <SpendingBreakdown />
