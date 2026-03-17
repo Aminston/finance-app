@@ -35,7 +35,7 @@ export function GET() {
 
   const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" }) as Buffer;
 
-  return new NextResponse(buffer, {
+  return new NextResponse(buffer as unknown as BodyInit, {
     status: 200,
     headers: {
       "Content-Type":
