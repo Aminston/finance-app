@@ -13,6 +13,7 @@ model Profile {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
   updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
+  members           Member[]
   accounts          Account[]
   categories        Category[]
   importMappings    ImportMapping[]
@@ -23,15 +24,49 @@ model Profile {
   @@map("profiles")
 }
 
+model Organization {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  members           Member[]
+  accounts          Account[]
+  categories        Category[]
+  importMappings    ImportMapping[]
+  statementUploads  StatementUpload[]
+  transactionDrafts TransactionDraft[]
+  transactions      Transaction[]
+
+  @@map("organizations")
+}
+
+model Member {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  role           String   @default("member")
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  user         Profile      @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([userId, organizationId])
+  @@map("members")
+}
+
 model Account {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String   @map("user_id") @db.Uuid
-  name        String
-  institution String?
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String
+  institution    String?
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   user             Profile          @relation(fields: [userId], references: [id])
+  organization     Organization     @relation(fields: [organizationId], references: [id])
   statementUploads StatementUpload[]
   transactionDrafts TransactionDraft[]
   transactions     Transaction[]
@@ -40,33 +75,39 @@ model Account {
 }
 
 model Category {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
-  name      String
-  type      String
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  name           String
+  type           String
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
 
-  user Profile @relation(fields: [userId], references: [id])
+  user         Profile      @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 
   @@map("categories")
 }
 
 model ImportMapping {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  bankName    String   @unique @map("bank_name")
-  mappingJson Json     @map("mapping_json")
-  userId      String   @map("user_id") @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bankName       String   @map("bank_name")
+  mappingJson    Json     @map("mapping_json")
+  userId         String   @map("user_id") @db.Uuid
+  organizationId String   @map("organization_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
-  user Profile @relation(fields: [userId], references: [id])
+  user         Profile      @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 
+  @@unique([organizationId, bankName])
   @@map("import_mappings")
 }
 
 model StatementUpload {
   id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId           String    @map("user_id") @db.Uuid
+  organizationId   String    @map("organization_id") @db.Uuid
   accountId        String?   @map("account_id") @db.Uuid
   storageBucket    String    @map("storage_bucket")
   storagePath      String    @map("storage_path")
@@ -76,9 +117,10 @@ model StatementUpload {
   uploadedAt       DateTime  @default(now()) @map("uploaded_at") @db.Timestamptz
   processedAt      DateTime? @map("processed_at") @db.Timestamptz
 
-  user             Profile            @relation(fields: [userId], references: [id])
-  account          Account?           @relation(fields: [accountId], references: [id])
-  processingJobs   ProcessingJob[]
+  user              Profile            @relation(fields: [userId], references: [id])
+  organization      Organization       @relation(fields: [organizationId], references: [id])
+  account           Account?           @relation(fields: [accountId], references: [id])
+  processingJobs    ProcessingJob[]
   transactionDrafts TransactionDraft[]
 
   @@map("statement_uploads")
@@ -93,23 +135,23 @@ model ProcessingJob {
   finishedAt       DateTime? @map("finished_at") @db.Timestamptz
   errorMessage     String?   @map("error_message")
 
-  upload       StatementUpload @relation(fields: [uploadId], references: [id])
+  upload        StatementUpload @relation(fields: [uploadId], references: [id])
   aiRequestLogs AiRequestLog[]
 
   @@map("processing_jobs")
 }
 
 model AiRequestLog {
-  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  jobId             String   @map("job_id") @db.Uuid
-  model             String
-  prompt            String
-  response          String?
-  tokensPrompt      Int?     @map("tokens_prompt")
-  tokensCompletion  Int?     @map("tokens_completion")
-  requestMetadata   Json?    @map("request_metadata")
-  responseMetadata  Json?    @map("response_metadata")
-  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobId            String   @map("job_id") @db.Uuid
+  model            String
+  prompt           String
+  response         String?
+  tokensPrompt     Int?     @map("tokens_prompt")
+  tokensCompletion Int?     @map("tokens_completion")
+  requestMetadata  Json?    @map("request_metadata")
+  responseMetadata Json?    @map("response_metadata")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   job ProcessingJob @relation(fields: [jobId], references: [id])
 
@@ -117,46 +159,50 @@ model AiRequestLog {
 }
 
 model TransactionDraft {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  uploadId    String    @map("upload_id") @db.Uuid
-  userId      String    @map("user_id") @db.Uuid
-  accountId   String?   @map("account_id") @db.Uuid
-  date        DateTime  @db.Timestamptz
-  description String
-  merchant    String?
-  amount      Decimal   @db.Decimal
-  currency    String    @default("MXN")
-  type        String
-  category    String?
-  statement   String?
-  confidence  Int?
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  uploadId       String    @map("upload_id") @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  accountId      String?   @map("account_id") @db.Uuid
+  date           DateTime  @db.Timestamptz
+  description    String
+  merchant       String?
+  amount         Decimal   @db.Decimal
+  currency       String    @default("MXN")
+  type           String
+  category       String?
+  statement      String?
+  confidence     Int?
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
 
-  upload  StatementUpload @relation(fields: [uploadId], references: [id])
-  user    Profile         @relation(fields: [userId], references: [id])
-  account Account?        @relation(fields: [accountId], references: [id])
+  upload       StatementUpload @relation(fields: [uploadId], references: [id])
+  user         Profile         @relation(fields: [userId], references: [id])
+  organization Organization    @relation(fields: [organizationId], references: [id])
+  account      Account?        @relation(fields: [accountId], references: [id])
 
   @@map("transaction_drafts")
 }
 
 model Transaction {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String    @map("user_id") @db.Uuid
-  accountId   String?   @map("account_id") @db.Uuid
-  date        DateTime  @db.Timestamptz
-  description String
-  merchant    String?
-  amount      Decimal   @db.Decimal
-  currency    String    @default("MXN")
-  type        String
-  category    String?
-  statement   String?
-  confidence  Int?
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String    @map("user_id") @db.Uuid
+  organizationId String    @map("organization_id") @db.Uuid
+  accountId      String?   @map("account_id") @db.Uuid
+  date           DateTime  @db.Timestamptz
+  description    String
+  merchant       String?
+  amount         Decimal   @db.Decimal
+  currency       String    @default("MXN")
+  type           String
+  category       String?
+  statement      String?
+  confidence     Int?
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz
 
-  user    Profile  @relation(fields: [userId], references: [id])
-  account Account? @relation(fields: [accountId], references: [id])
+  user         Profile      @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+  account      Account?     @relation(fields: [accountId], references: [id])
 
   @@map("transactions")
 }

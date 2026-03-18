@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
-import { AppError } from "./errors"
+import { cookies } from "next/headers"
+import { AppError, UnauthorizedError, ForbiddenError } from "./errors"
+import { createClient } from "./supabase/server"
+import { prisma } from "./db"
 
 // ─── Response types ───────────────────────────────────────────────────────────
 export type ApiSuccess<T> = { data: T; error: null }
@@ -17,6 +20,23 @@ export function err(
   status = 500
 ): NextResponse<ApiError> {
   return NextResponse.json({ data: null, error: { message, code } }, { status })
+}
+
+// ─── Auth helper ──────────────────────────────────────────────────────────────
+export async function requireAuth() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new UnauthorizedError()
+
+  const organizationId = cookies().get("activeOrgId")?.value
+  if (!organizationId) throw new ForbiddenError()
+
+  const member = await prisma.member.findUnique({
+    where: { userId_organizationId: { userId: user.id, organizationId } },
+  })
+  if (!member) throw new ForbiddenError()
+
+  return { user, organizationId, role: member.role }
 }
 
 // ─── Route error handler ──────────────────────────────────────────────────────

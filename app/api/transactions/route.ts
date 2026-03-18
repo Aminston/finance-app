@@ -1,13 +1,17 @@
-import { NextResponse } from "next/server";
-import { getTransactions } from "@/lib/transactions";
+import { ok, handleRouteError, requireAuth } from "@/lib/api"
+import { transactionService } from "@/features/transactions/lib/service"
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const month = searchParams.get("month");
-  const account = searchParams.get("account");
-  const search = searchParams.get("search");
+  try {
+    const { organizationId } = await requireAuth()
+    const { searchParams } = new URL(request.url)
+    const month = searchParams.get("month")
+    const account = searchParams.get("account")
+    const search = searchParams.get("search")
 
-  const transactions = await getTransactions({ month, account, search });
-
-  return NextResponse.json({ data: transactions });
+    const transactions = await transactionService.getFiltered({ month, account, search }, organizationId)
+    return ok(transactions)
+  } catch (error) {
+    return handleRouteError(error)
+  }
 }

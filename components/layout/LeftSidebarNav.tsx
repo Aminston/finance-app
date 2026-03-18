@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { signOut } from "@/features/auth";
 
 const navItems = [
   { href: "/", label: "Inicio", icon: "🏡" },
@@ -57,7 +58,19 @@ export default function LeftSidebarNav() {
             );
           })}
         </nav>
-        <div className="px-4 py-4" />
+        <div className="px-3 py-4">
+          <form action={signOut}>
+            <button
+              type="submit"
+              className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100 ${
+                collapsed ? "justify-center" : ""
+              }`}
+            >
+              <span className="text-base" aria-hidden>⬛</span>
+              {!collapsed && <span>Cerrar sesión</span>}
+            </button>
+          </form>
+        </div>
       </div>
     </aside>
   );
